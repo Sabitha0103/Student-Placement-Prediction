@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import joblib
+from sklearn.ensemble import RandomForestClassifier
 import plotly.express as px
 
 from sklearn.preprocessing import LabelEncoder
@@ -40,11 +40,6 @@ h1{
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------------------
-# LOAD MODEL
-# ---------------------------
-
-model = joblib.load("placement_model.pkl")
 
 # ---------------------------
 # LOAD DATASET
@@ -74,6 +69,17 @@ X = temp_df.drop(
 )
 
 y = temp_df["placement_status"]
+
+# ---------------------------
+# TRAIN MODEL
+# ---------------------------
+
+model = RandomForestClassifier(
+    n_estimators=100,
+    random_state=42
+)
+
+model.fit(X, y)
 
 predictions = model.predict(X)
 
